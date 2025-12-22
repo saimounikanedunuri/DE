@@ -241,3 +241,9 @@ Processing: Databricks / Spark / Synapse
 Serving: Power BI dashboards, APIs for doctors
 
 Monitoring: Azure Monitor, Log Analytics
+
+What is Data Modeling :
+Data Modeling is the process of designing how data is stored, organized, and related in a database or data warehouse to make it easy to use and understand.
+
+In Dimension table types, we are having "SCD concepts"
+
