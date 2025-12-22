@@ -1,0 +1,243 @@
+Introduction
+
+Data engineering in healthcare focuses on collecting, cleaning, storing, and transforming patient and hospital data to make it usable for analytics, research, and reporting.
+
+Goal: Provide high-quality, reliable, and accessible data for healthcare analytics, dashboards, predictive models (e.g., predicting patient readmissions), and operational efficiency.
+
+Example: A hospital wants to analyze patient admissions, lab results, and treatment outcomes to reduce readmission rates.
+
+What is Data Engineering?
+
+Field: Building pipelines that move raw healthcare data from sources → storage → analytics.
+
+Ensures: Patient records, lab results, and appointment data are cleaned, validated, and transformed.
+
+Key Tasks in Healthcare:
+
+Data ingestion: Collect data from EMR systems, lab instruments, IoT devices (e.g., heart monitors), insurance databases.
+
+Data cleaning & validation: Remove duplicates, fix invalid patient IDs, standardize lab result units.
+
+Data transformation: Aggregate patient vitals daily, calculate average stay duration.
+
+Data storage: Store in a HIPAA-compliant data warehouse or lakehouse.
+
+Data serving & monitoring: Provide dashboards for doctors, researchers, and administrators.
+
+Example: Transforming daily blood sugar readings from multiple devices into a standardized patient-level table for analysis.
+
+Data Engineering Lifecycle
+
+Data Generation:
+
+Sources: EMR/EHR systems, lab machines, wearable devices, insurance claims.
+
+Characteristics:
+
+Volume: Millions of patient records
+
+Velocity: Real-time monitoring devices
+
+Variety: Structured (lab results), semi-structured (HL7 messages), unstructured (doctor notes)
+
+Data Ingestion:
+
+Batch ingestion: Daily import of lab results CSVs.
+
+Streaming ingestion: Continuous monitoring of ICU vitals via IoT devices.
+
+Data Cleaning & Validation:
+
+Remove duplicate patient entries
+
+Handle missing values in lab results (impute or flag)
+
+Standardize units: mg/dL vs mmol/L for blood sugar
+
+Data Transformation:
+
+Aggregation: Average daily heart rate per patient
+
+Filtering: Exclude records with invalid IDs
+
+Joining: Combine patient demographics with lab results
+
+Enrichment: Add patient risk scores or comorbidity indices
+
+Data Storage:
+
+Data Lake: Raw medical images, sensor data
+
+Data Warehouse: Structured patient summaries, billing, and treatment data
+
+Lakehouse: Unified platform supporting both raw and structured data
+
+Data Serving:
+
+Dashboards: ICU monitors, hospital admin KPIs
+
+Reports: Monthly treatment outcomes
+
+APIs: Predictive model integration for patient risk scoring
+
+Monitoring & Maintenance:
+
+Pipeline failures: Missing lab files or corrupted records
+
+Schema changes: New lab tests added to EMR systems
+
+Performance issues: Delayed processing of real-time vitals
+
+Data Upstream and Downstream
+
+Upstream (sources): EMR/EHR systems, lab devices, pharmacy systems.
+
+Downstream (consumers): Doctors, researchers, hospital administrators, AI models for predicting patient outcomes.
+
+Example: Patient vitals from wearable devices → data lake → transformed → AI model predicts likelihood of cardiac event → alerts doctor.
+
+OLTP vs OLAP in Healthcare
+Feature	OLTP	OLAP
+Purpose	Day-to-day transactions (admissions, prescriptions)	Analytics (patient outcome trends)
+Data Type	Current, detailed (individual visits)	Historical, aggregated (monthly mortality rates)
+Schema	Normalized	Star/Snowflake for analytics
+Example	EMR system recording lab tests	Data warehouse for hospital performance dashboards
+ETL in Healthcare
+
+Extract: Pull lab results, patient demographics, and medication data.
+
+Transform: Standardize units, clean missing patient IDs, calculate aggregate vitals.
+
+Load: Store into a data warehouse for reporting or predictive modeling.
+
+Example: Extract daily lab results → transform units & flag anomalies → load into warehouse for hospital KPIs.
+
+Data Warehouse and Layers
+
+Staging Layer: Raw patient records and lab files.
+
+Integration Layer: Cleaned and joined patient tables.
+
+Presentation Layer: Analytics-ready for dashboards (e.g., average length of stay per department).
+
+Incremental Loading
+
+Only load new or updated patient records, not the entire dataset.
+
+Example: Update only patients admitted yesterday, not the entire hospital database.
+
+Dimensional Data Modeling
+
+Fact tables: Measures like patient admissions, treatment costs, lab results.
+
+Dimension tables: Patient, doctor, department, diagnosis.
+
+Star Schema:
+
+Fact: Patient visits
+
+Dimensions: Patient, Doctor, Department
+
+Simple, fast queries for hospital KPIs
+
+Snowflake Schema:
+
+Normalize dimensions: Department → Hospital branch
+
+Saves storage, slightly more complex queries
+
+Slowly Changing Dimensions (SCD)
+
+Type 1: Overwrite patient address changes.
+
+Type 2: Add a new row for updated patient insurance policy.
+
+Type 3: Maintain both old & new values for patient risk score.
+
+Data Lake in Healthcare
+
+Stores raw medical data: imaging (X-rays, MRIs), sensor readings, lab CSVs.
+
+Cost-effective and scalable.
+
+Example: Store raw MRI images in Azure Data Lake before processing with ML models.
+
+Data Lake vs Warehouse
+Feature	Data Lake	Data Warehouse
+Data Type	Raw, structured, unstructured	Structured, cleaned
+Schema	Schema-on-read	Schema-on-write
+Purpose	Flexible storage, ML	Analytics, reporting
+Example	Raw sensor data from ICU devices	Processed patient summaries
+Lakehouse
+
+Combines lake + warehouse: raw + structured data with ACID transactions.
+
+Supports analytics + ML models.
+
+Example: Raw ECG signals + processed patient risk scores in one platform.
+
+Row vs Column File Formats
+
+Row-based (CSV, JSON): Easy writes → slow analytics (e.g., patient admissions).
+
+Column-based (Parquet, ORC): Fast queries → compression, analytics-ready (e.g., monthly lab results aggregation).
+
+Delta Lake
+
+Open-source layer for reliable data lakes.
+
+ACID transactions, schema enforcement, time travel.
+
+Example: Track historical lab result changes for a patient over time.
+
+Big Data Engineering
+
+Tools for large-scale healthcare data: Hadoop, Spark, Kafka, Flink.
+
+Enables real-time patient monitoring, predictive analytics, and research datasets.
+
+Distributed Computing with Apache Spark
+
+Driver: Coordinates tasks across hospital data clusters.
+
+Cluster Manager: Allocates resources.
+
+Executors: Process patient records in parallel.
+
+RDD / DataFrame: Distributed datasets (e.g., daily vitals for all patients).
+
+Cloud Data Engineering
+
+Cloud storage/processing: AWS (S3, Redshift), Azure (Data Lake, Databricks), GCP (BigQuery).
+
+Scalable for hospital-wide or multi-hospital data.
+
+Cloud Computing
+
+On-demand compute, storage, services.
+
+Models: IaaS (VMs), PaaS (Databricks), SaaS (EMR system online).
+
+Medallion Architecture
+
+Multi-layer data lake:
+
+Bronze: Raw lab data, vitals
+
+Silver: Cleaned, standardized patient tables
+
+Gold: Aggregated, analytics-ready (average length of stay, readmission rates)
+
+Azure End-to-End Healthcare Data Architecture
+
+Data Sources: EMR, lab devices, wearables
+
+Ingestion: Azure Data Factory, Event Hub, Kafka
+
+Storage: Azure Data Lake
+
+Processing: Databricks / Spark / Synapse
+
+Serving: Power BI dashboards, APIs for doctors
+
+Monitoring: Azure Monitor, Log Analytics
