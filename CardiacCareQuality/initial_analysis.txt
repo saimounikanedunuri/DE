@@ -1,0 +1,3 @@
+Mortality Rates: Use Observed_Mortality_Rate, Expected_Mortality_Rate, and Risk_Adjusted_Mortality_Rate for summary statistics, trends, and comparisons.
+Number of Cases and Deaths: Aggregate Number_of_Cases and Number_of_Deaths by procedure, hospital, or region to understand volumes and outcomes.
+Performance vs. Expectations: Analyze columns like Observed_vs_Expected_Difference and flags (Is_Higher_Than_Expected_Mortality, etc.) to benchmark performance.
