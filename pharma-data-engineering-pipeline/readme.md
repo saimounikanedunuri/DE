@@ -31,15 +31,15 @@ Compliance	- FDA audits can shut plants
 Finance	- Wrong revenue numbers
 Operations -	Overstock / stockouts
 Brand	- Patient safety risk
---------------------------------------------------------------
-Requirement
+
+Requirement:
 Design a config-driven, scalable pharma data pipeline that:
 Detects silent data corruption
 Enforces business data quality rules
 Works on TB-scale data
 Produces trusted analytics-ready data
------------------------------------------------------------
-Solution Overview
+
+Solution Overview:
 Raw Pharma Data (CSV / TBs)
         ↓
 Schema & Config Validation
@@ -51,7 +51,7 @@ Data Cleaning & Standardization
 Business Metrics Calculation
         ↓
 Parquet Curated Layer (Trusted Data)
--------------------------------------------------------
+
 Problem 1: Silent Data Corruption
 
 ✔️ Solved by data_quality.py
@@ -79,9 +79,9 @@ Columnar storage → faster queries → lower cost
 The problem this project is solving:
 In pharma pipelines, jobs often run successfully but the data is silently corrupted. This leads to incorrect sales reporting, compliance risks, and delayed issue detection.
 
-I designed a config-driven PySpark pipeline that enforces business data quality rules like quantity validation, expiry checks, QC status verification, and storage condition validation before data reaches 
+Designed a config-driven PySpark pipeline that enforces business data quality rules like quantity validation, expiry checks, QC status verification, and storage condition validation before data reaches 
 analytics. The pipeline converts raw CSV data into curated Parquet datasets suitable for large-scale analytics.
-------------------------------------------
+
 🗓️ DAILY JOBS (Most common)
 Used when:
 Sales data arrives every day
@@ -133,7 +133,7 @@ Executive reporting
 In project:
 👉 Compliance & audit datasets
 
-----------------------------------------------
+
 🧑‍💻 DAILY TASKS
 ✅ 1. Monitor pipelines
 Check if jobs ran successfully
@@ -186,12 +186,12 @@ Trace data
 Check pipeline logic
 Validate source data
 
-------------------------------------------
+
 We had scheduled pharma data pipelines running at different frequencies based on business needs.
 Daily jobs handled raw sales and manufacturing data ingestion, while weekly and monthly jobs generated aggregated and compliance-ready datasets.
 
 As a Python data engineer, my role involved building, monitoring, enhancing, and automating these pipelines, ensuring data quality, handling failures, and supporting analytics and regulatory reporting.
---------------------------------------------
+
 start
   ↓
 extract_raw_data
@@ -204,7 +204,7 @@ write_parquet
   ↓
 end
 
----------------------------------------
+
 🚨 Real Failure Scenarios
 Scenario 1: Data quality failure
 DAG fails at run_data_quality_checks
@@ -215,11 +215,11 @@ Scenario 2: Late data arrival
 Upstream system delays file
 DAG retries
 Eventually succeeds
------------------------------------
+
 We built an automated pharma data pipeline orchestrated using Airflow.
 Airflow handled scheduling, retries, dependencies, and monitoring, while Python and PySpark handled extraction, data quality, transformations, and Parquet loading.
 Different DAG schedules were used for daily ingestion, weekly summaries, and monthly compliance reporting.
----------------------------------
+
             ┌────────────┐
             │  Sources   │
             │ CSV / DB   │
@@ -240,7 +240,7 @@ Different DAG schedules were used for daily ingestion, weekly summaries, and mon
                   ↓
         MART (Gold)
 
--------------------------------
+
 Our pipeline follows a layered architecture. Ingestion loads source data into the raw layer without modification. Quality checks validate raw data before it is cleaned and standardized into the curated layer. 
 Business transformations and aggregations are then applied to create mart-level datasets for analytics.
-------------------------------
+
